@@ -11,45 +11,13 @@ def isParen(x):
     return x in parens
 
 
-def parse(equation = ' '):
+def parseUserInput(equation = ' '):
     spaced = []
-    nospace = equation.replace(' ', '')
-    prevprev = ''
-    prev = ''
-    counter = 0
-    prevNums = []
-    for x in nospace:
-        if (isOperator(prev) and isParen(x)) or (prev.isdigit() and isParen(x)) or (prev.isdigit() and isOperator(x)) or (isParen(prev) and x.isdigit()) or (isParen(prev) and isOperator(x)):
-            spaced.append(prev)
-            spaced.append(' ')
-        elif isOperator(prev) and x.isdigit():
-            if isOperator(prevprev):
-                spaced.append(prev)
-        elif isOperator(prev) and isOperator(x):
-            if x == '-':
-                spaced.append(prev)
-                spaced.append(' ')
-            else:
-                raise RuntimeError('Incorrect operator usage')
-        else:
-            if prev:
-                spaced.append(prev)
-        counter += 1
-        prevprev = prev
-        prev = x
-        if len(nospace) == counter:
-            spaced.append(x)
-    print spaced
-    main(spaced)
-
-def pa(equation = ' '):
-    spaced = []
-    for x in equation:
-        if x != ' ':
-            spaced.append(x)
-            spaced.append(' ')
-    spaced.pop()
-    print 'Before:', ''.join(spaced)
+    #for x in equation:
+    #    if x != ' ':
+    #        spaced.append(x)
+    #        spaced.append(' ')
+    #spaced.pop()
     prevprev = ''
     prev = ''
     counter = 0
@@ -63,8 +31,7 @@ def pa(equation = ' '):
             prev = x
         counter += 1
     fin = ''.join(spaced).split(' ')
-    print 'After:', fin
-    main(fin)
+    return fin
             
 
 
@@ -78,7 +45,7 @@ def assoc(operator):
     else:
         raise RuntimeError('Operator specified does not exist: ' + operator)
     
-def main(val):
+def ToPoland(val):
     infix = val
     rpn = ''
     stack = []
@@ -125,4 +92,4 @@ def main(val):
     print 'The RPN version is:', rpn
 
 if __name__=='__main__':
-    pa(sys.argv[1])
+    ToPoland(parseUserInput(sys.argv[1]))
