@@ -18,6 +18,8 @@ def parseUserInput(equation = ' '):
     #        spaced.append(x)
     #        spaced.append(' ')
     #spaced.pop()
+    spaced = equation.split(' ')
+    spaced = 
     prevprev = ''
     prev = ''
     counter = 0
