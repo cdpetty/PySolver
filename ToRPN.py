@@ -13,13 +13,11 @@ def isParen(x):
 
 def parseUserInput(equation = ' '):
     spaced = []
-    #for x in equation:
-    #    if x != ' ':
-    #        spaced.append(x)
-    #        spaced.append(' ')
-    #spaced.pop()
-    spaced = equation.split(' ')
-    spaced = 
+    for x in equation:
+        if x != ' ':
+            spaced.append(x)
+            spaced.append(' ')
+    spaced.pop()
     prevprev = ''
     prev = ''
     counter = 0
