@@ -1,6 +1,5 @@
 import sys
 
-
 operators = ['+','%','-','*','/']
 parens = ['(','[','{',')',']', '}']
 
@@ -10,8 +9,7 @@ def isOperator(x):
 def isParen(x):
     return x in parens
 
-
-def parseUserInput(equation = ' '):
+def format(equation = ' '):
     spaced = []
     for x in equation:
         if x != ' ':
@@ -20,16 +18,27 @@ def parseUserInput(equation = ' '):
     spaced.pop()
     prevprev = ''
     prev = ''
-    counter = 0
-    for x in spaced:
+    for counter, x in enumerate(spaced):
+        ##check for standard numbers
         if prev.isdigit() and x.isdigit():
             spaced.pop(counter - 1)
+            
+        ##check for negative numbers
         if isOperator(prevprev) and (prev == '-' and x.isdigit()):
             spaced.pop(counter - 1)
+            
+        ## Check for lack of operator in variable/digit combo "2x"
+        if prev.isdigit() and x.isalpha():
+            spaced.insert(counter, '*')
+            spaced.insert(counter+1, ' ')
+            spaced.insert(counter+2, x)
+            spaced.insert(counter+3, ' ')
+            
+        ##ignore spaces
         if x != ' ':
             prevprev = prev
             prev = x
-        counter += 1
+            
     fin = ''.join(spaced).split(' ')
     return fin
             
@@ -43,20 +52,18 @@ def assoc(operator):
     elif operator in ['^']:
         return 3
     else:
-        raise RuntimeError('Operator specified does not exist: ' + operator)
+        raise RuntimeError('Operator specified does not exist: "' + operator + '"')
     
 def ToPoland(val):
     infix = val
     rpn = ''
     stack = []
     
-    operators = ['+','%','-','*','/']
+    #operators = ['+','%','-','*','/']
     left = ['(','[','{']
     right = [')',']', '}']
     for x in infix:
-        if x == ' ':
-            pass
-        elif x.isdigit():
+        if x.isdigit() or x.isalpha():
             rpn += x + ' '
         elif x in operators:
             temp = ''
@@ -73,7 +80,6 @@ def ToPoland(val):
         elif x in left:
             stack.append(x)
         elif x in right:
-
             if stack:
                 temp = stack[len(stack)-1]
                 while stack and temp not in left:
@@ -89,7 +95,13 @@ def ToPoland(val):
     while stack:
         rpn += stack.pop() + ' '
     rpn = rpn[:len(rpn)-1]
-    print 'The RPN version is:', rpn
+    ##print 'The RPN version is:', rpn
+    return rpn
 
 if __name__=='__main__':
-    ToPoland(parseUserInput(sys.argv[1]))
+    ##if len(sys.argv) == 2:
+    ##    ToPoland(parseUserInput(sys.argv[1]))
+    ##else:
+    ##    print 'No input provided'
+    print evaluate(ToPoland(format(sys.argv[1])))
+    
