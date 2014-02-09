@@ -1,5 +1,3 @@
-import ToRPN as rpn
-import sys
 
 def operate(x, y, op):
     if op == '*':
