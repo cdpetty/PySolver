@@ -1,8 +1,7 @@
 import sys
 
-class Evaluator(Object):
+class Evaluator(object):
 	"""Evaluator class evaluates rpn strings"""
-
 	def operate(x, y, op):
 		if op == '*':
 			return x * y
@@ -12,7 +11,6 @@ class Evaluator(Object):
 			return y / x
 		elif op == '-':
 			return y - x
-		
 	def evaluate(rpn_string):
 		stack = []
 		for x in rpn_string:
@@ -31,13 +29,13 @@ class RPN(object):
   operators = ['+','%','-','*','/']
   parens = ['(','[','{',')',']', '}']
 
-  def isOperator(x):
-      return x in operators
+  def isOperator(operator):
+      return operator in operators
 
-  def isParen(x):
-      return x in parens
+  def isParen(operator):
+      return operator in parens
 
-  def format(equation = ' '):
+  def format(*equation = ' '):
       spaced = []
       for x in equation:
           if x != ' ':
@@ -69,8 +67,6 @@ class RPN(object):
               
       fin = ''.join(spaced).split(' ')
       return fin
-              
-
 
   def assoc(operator):
       if operator in ['+','-']:
@@ -123,8 +119,16 @@ class RPN(object):
       while stack:
           rpn += stack.pop() + ' '
       rpn = rpn[:len(rpn)-1]
-      ##print 'The RPN version is:', rpn
       return rpn
 
-if __name__=='__main__':
-    
+if __name__=="__main__":
+  while True:
+    userinput = raw_input("Input your calulation string: ")
+    if userinput == "quit":
+      sys.exit("Program Exited")
+    toRPN = RPN()
+    form = toRPN.format(userinput)
+    formatted= toRPN.ToPoland(form)
+    toEvaluate = Evaluator()
+    evaluated = toEvaluate.evaluate(formatted)
+    print "RPN String:", formatted, "\nEvaluated to:", evaluated 
